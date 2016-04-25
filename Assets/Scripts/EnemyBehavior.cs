@@ -102,7 +102,7 @@ public class EnemyBehavior : MonoBehaviour {
 
             if (mHits > 2) // 3 hits and die
             {
-                mGameManager.subtractEnemyCount();
+                mGameManager.scoreIncrease();
                 Destroy(this.gameObject);
             }
             else // stunned
