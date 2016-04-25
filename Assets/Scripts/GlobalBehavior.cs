@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GlobalBehavior : MonoBehaviour {
@@ -38,7 +39,7 @@ public class GlobalBehavior : MonoBehaviour {
 
         mEggCount = 0;
         mEnemyCount = 0;
-        mMovingEnemy = false;
+        mMovingEnemy = true;
         mEnemiesHit = 0;
 
         #region initialize enemy spawning
@@ -70,6 +71,9 @@ public class GlobalBehavior : MonoBehaviour {
         GameObject scoreObject = GameObject.Find("Score");
         UnityEngine.UI.Text echo = scoreObject.GetComponent<UnityEngine.UI.Text>();
         echo.text = "Students Graded: " + mEnemiesHit;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene("Menu");
     }
 	
 	#region Game Window World size bound support

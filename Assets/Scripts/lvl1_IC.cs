@@ -51,6 +51,9 @@ public class lvl1_IC : MonoBehaviour {
                     egg.SetForwardDirection(transform.up);
                 }
             }
+            var source = GetComponents<AudioSource>();
+            AudioSource reload = source[0];
+            reload.Play();
         }
         #endregion
 

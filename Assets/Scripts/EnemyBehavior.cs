@@ -62,6 +62,13 @@ public class EnemyBehavior : MonoBehaviour {
         {
             if (toHero.magnitude <= 30.0f && dot > 0) // RUN
             {
+                if (mState != EnemyState.Run)
+                {
+                    var source = GetComponents<AudioSource>();
+                    AudioSource no = source[1];
+                    no.Play();
+                }
+
                 mState = EnemyState.Run;
                 if (null != mRenderder)
                     mRenderder.sprite = Resources.Load("Textures/running_student", typeof(Sprite)) as Sprite;
@@ -95,11 +102,13 @@ public class EnemyBehavior : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.gameObject.name == "Egg(Clone)") {
+        var source = GetComponents<AudioSource>();
+        AudioSource blast = source[0];
+        AudioSource no = source[1];
+        AudioSource bite = source[2];
+
+        if (other.gameObject.name == "Egg(Clone)") {
             mHits++;
-            var source = GetComponents<AudioSource>();
-            AudioSource blast = source[0];
-            AudioSource no = source[1];
             blast.Play();
 
             if (mHits > 2) // 3 hits and die
@@ -109,7 +118,6 @@ public class EnemyBehavior : MonoBehaviour {
             }
             else // stunned
             {
-                no.Play();
                 mTimeStunned = Time.realtimeSinceStartup;
                 mState = EnemyState.Stunned;
                 if (null != mRenderder)
@@ -120,6 +128,7 @@ public class EnemyBehavior : MonoBehaviour {
 		}
         else if (other.gameObject.name == "Apple(Clone)")
         {
+            bite.Play();
             mHits -= 3;
             mState = EnemyState.Scary;
             wasScary = true;

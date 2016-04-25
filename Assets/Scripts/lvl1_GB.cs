@@ -40,7 +40,7 @@ public class lvl1_GB : MonoBehaviour {
 
         mEggCount = 0;
         mEnemyCount = 0;
-        mMovingEnemy = false;
+        mMovingEnemy = true;
         mEnemiesHit = 0;
 
         #region initialize enemy spawning
@@ -87,9 +87,12 @@ public class lvl1_GB : MonoBehaviour {
         {
             winText.enabled = true;
 
-            if (Input.anyKey)
+            if (Input.GetKeyDown(KeyCode.Space))
                 SceneManager.LoadScene("mp3");
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene("Menu");
 
     }
 

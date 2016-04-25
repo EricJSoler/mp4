@@ -11,11 +11,11 @@ public class lvl1_enemy : MonoBehaviour {
         Scary
     }
 
-    private float kReferenceSpeed = Random.Range(20.0f, 40.0f);
+    private float kReferenceSpeed = 50.0f;
     public const float kTowardsCenter = 0.5f;
     public const float kRotateSpeed = -9.0f; // 9 degrees/sec counterclockwise
     public const float kRunRotationSpeed = -30.0f;
-    public const float kStunnedDuration = 5.0f;
+    public const float kStunnedDuration = 10.0f;
     private lvl1_GB mGameManager;
     private lvl1_IC mHero;
     private SpriteRenderer mRenderder;
@@ -63,6 +63,13 @@ public class lvl1_enemy : MonoBehaviour {
         {
             if (toHero.magnitude <= 30.0f && dot > 0) // RUN
             {
+                if (mState != EnemyState.Run)
+                {
+                    var source = GetComponents<AudioSource>();
+                    AudioSource no = source[1];
+                    no.Play();
+                }
+
                 mState = EnemyState.Run;
                 if (null != mRenderder)
                     mRenderder.sprite = Resources.Load("Textures/running_student", typeof(Sprite)) as Sprite;
@@ -96,12 +103,14 @@ public class lvl1_enemy : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        var source = GetComponents<AudioSource>();
+        AudioSource blast = source[0];
+        AudioSource no = source[1];
+        AudioSource bite = source[2];
+
         if (other.gameObject.name == "lvl1_egg(Clone)")
         {
             mHits++;
-            var source = GetComponents<AudioSource>();
-            AudioSource blast = source[0];
-            AudioSource no = source[1];
             blast.Play();
 
             if (mHits > 2) // 3 hits and die
@@ -112,7 +121,6 @@ public class lvl1_enemy : MonoBehaviour {
             }
             else // stunned
             {
-                no.Play();
                 mTimeStunned = Time.realtimeSinceStartup;
                 mState = EnemyState.Stunned;
                 if (null != mRenderder)
@@ -123,6 +131,7 @@ public class lvl1_enemy : MonoBehaviour {
         }
         else if (other.gameObject.name == "lvl1_apple(Clone)")
         {
+            bite.Play();
             mHits -= 3;
             mState = EnemyState.Scary;
             wasScary = true;
