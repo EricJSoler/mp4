@@ -16,7 +16,6 @@ public class lvl1_enemy : MonoBehaviour {
     public const float kRotateSpeed = -9.0f; // 9 degrees/sec counterclockwise
     public const float kRunRotationSpeed = -30.0f;
     public const float kStunnedDuration = 5.0f;
-
     private lvl1_GB mGameManager;
     private lvl1_IC mHero;
     private SpriteRenderer mRenderder;
@@ -100,16 +99,20 @@ public class lvl1_enemy : MonoBehaviour {
         if (other.gameObject.name == "lvl1_egg(Clone)")
         {
             mHits++;
-            AudioSource source = GetComponent<AudioSource>();
-            source.Play();
+            var source = GetComponents<AudioSource>();
+            AudioSource blast = source[0];
+            AudioSource no = source[1];
+            blast.Play();
 
             if (mHits > 2) // 3 hits and die
             {
                 mGameManager.subtractEnemyCount();
+                mGameManager.scoreIncrease();
                 Destroy(this.gameObject);
             }
             else // stunned
             {
+                no.Play();
                 mTimeStunned = Time.realtimeSinceStartup;
                 mState = EnemyState.Stunned;
                 if (null != mRenderder)

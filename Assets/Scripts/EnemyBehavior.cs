@@ -97,8 +97,10 @@ public class EnemyBehavior : MonoBehaviour {
 	{
 		if (other.gameObject.name == "Egg(Clone)") {
             mHits++;
-            AudioSource source = GetComponent<AudioSource>();
-            source.Play();
+            var source = GetComponents<AudioSource>();
+            AudioSource blast = source[0];
+            AudioSource no = source[1];
+            blast.Play();
 
             if (mHits > 2) // 3 hits and die
             {
@@ -107,6 +109,7 @@ public class EnemyBehavior : MonoBehaviour {
             }
             else // stunned
             {
+                no.Play();
                 mTimeStunned = Time.realtimeSinceStartup;
                 mState = EnemyState.Stunned;
                 if (null != mRenderder)

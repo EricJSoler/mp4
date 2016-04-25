@@ -26,6 +26,7 @@ public class lvl1_GB : MonoBehaviour {
     private int mEggCount;
     private bool mMovingEnemy;
     private float nextAppleSpawn;
+    private int mEnemiesHit;
 
     // Use this for initialization
     void Start()
@@ -40,6 +41,7 @@ public class lvl1_GB : MonoBehaviour {
         mEggCount = 0;
         mEnemyCount = 0;
         mMovingEnemy = false;
+        mEnemiesHit = 0;
 
         #region initialize enemy spawning
         if (null == mEnemyToSpawn)
@@ -54,11 +56,19 @@ public class lvl1_GB : MonoBehaviour {
         #endregion
 
         nextAppleSpawn = 0f;
+       
     }
-
+    public void scoreIncrease()
+    {
+        mEnemiesHit++;
+    }
     // Update is called once per frame
     void Update()
     {
+        GameObject win = GameObject.Find("Win");
+        UnityEngine.UI.Text winText = win.GetComponent<UnityEngine.UI.Text>();
+        winText.enabled = false;
+
         if (Input.GetKeyDown(KeyCode.Space))
             mMovingEnemy = !mMovingEnemy;
 
@@ -68,12 +78,18 @@ public class lvl1_GB : MonoBehaviour {
             SpawnApple();
         }
 
-        GameObject echoObject = GameObject.Find("EchoText");
-        GUIText echo = echoObject.GetComponent<GUIText>();
-        echo.text = "Enemies: " + mEnemyCount + " / 5"+ " Eggs: " + mEggCount;
+        GameObject scoreObject = GameObject.Find("Score");
+        UnityEngine.UI.Text score = scoreObject.GetComponent<UnityEngine.UI.Text>();
+        score.text = "Students Graded: " + mEnemiesHit;
 
         //Load mp3 scene upon killing all enemies
-        if (mEnemyCount <= 0) SceneManager.LoadScene("mp3");
+        if (mEnemyCount <= 0)
+        {
+            winText.enabled = true;
+
+            if (Input.anyKey)
+                SceneManager.LoadScene("mp3");
+        }
 
     }
 
