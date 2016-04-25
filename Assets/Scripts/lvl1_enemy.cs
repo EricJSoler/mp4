@@ -132,7 +132,7 @@ public class lvl1_enemy : MonoBehaviour {
     private void Move()
     {
         if (mGameManager.isEnemyMoving()) // Start Enemy Movement
-            transform.position += (mSpeed * Time.smoothDeltaTime) * transform.up;
+            transform.position += (mSpeed * Time.smoothDeltaTime * 0.3f) * transform.up;
     }
 
     private void RunAway()

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class lvl1_GB : MonoBehaviour {
@@ -18,7 +19,7 @@ public class lvl1_GB : MonoBehaviour {
 
     // spwaning enemy ...
     public GameObject mEnemyToSpawn = null;
-    public const int kInitialEnemyCount = 50;
+    public const int kInitialEnemyCount = 5;
     #endregion
 
     private int mEnemyCount;
@@ -69,7 +70,11 @@ public class lvl1_GB : MonoBehaviour {
 
         GameObject echoObject = GameObject.Find("EchoText");
         GUIText echo = echoObject.GetComponent<GUIText>();
-        echo.text = "Enemies: " + mEnemyCount + " Eggs: " + mEggCount;
+        echo.text = "Enemies: " + mEnemyCount + " / 5"+ " Eggs: " + mEggCount;
+
+        //Load mp3 scene upon killing all enemies
+        if (mEnemyCount <= 0) SceneManager.LoadScene("mp3");
+
     }
 
     #region Game Window World size bound support
@@ -166,11 +171,11 @@ public class lvl1_GB : MonoBehaviour {
     #region enemy spawning support
     private void SpawnAnEnemy()
     {
-        if ((Time.realtimeSinceStartup - mlastEnemySpawn) > kEnemySpawnInterval)
-        {
-            spawnEnemyHelper();
-            mlastEnemySpawn = Time.realtimeSinceStartup;
-        }
+        //if ((Time.realtimeSinceStartup - mlastEnemySpawn) > kEnemySpawnInterval)
+        //{
+        //    spawnEnemyHelper();
+        //    mlastEnemySpawn = Time.realtimeSinceStartup;
+        //}
     }
 
     private void spawnEnemyHelper()
