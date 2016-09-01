@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GlobalBehavior : MonoBehaviour {
@@ -25,6 +26,7 @@ public class GlobalBehavior : MonoBehaviour {
     private int mEggCount;
     private bool mMovingEnemy;
     private float nextAppleSpawn;
+    private int mEnemiesHit;
 
     // Use this for initialization
     void Start () {
@@ -37,10 +39,11 @@ public class GlobalBehavior : MonoBehaviour {
 
         mEggCount = 0;
         mEnemyCount = 0;
-        mMovingEnemy = false;
+        mMovingEnemy = true;
+        mEnemiesHit = 0;
 
-		#region initialize enemy spawning
-		if (null == mEnemyToSpawn) 
+        #region initialize enemy spawning
+        if (null == mEnemyToSpawn) 
 			mEnemyToSpawn = Resources.Load("Prefabs/Enemy") as GameObject;
         for (int i = 0; i < kInitialEnemyCount; i++)
         {
@@ -65,9 +68,12 @@ public class GlobalBehavior : MonoBehaviour {
             SpawnApple();
         }
 
-        GameObject echoObject = GameObject.Find("EchoText");
-        GUIText echo = echoObject.GetComponent<GUIText>();
-        echo.text = "Enemies: " + mEnemyCount + " Eggs: " + mEggCount;
+        GameObject scoreObject = GameObject.Find("Score");
+        UnityEngine.UI.Text echo = scoreObject.GetComponent<UnityEngine.UI.Text>();
+        echo.text = "Students Graded: " + mEnemiesHit;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene("Menu");
     }
 	
 	#region Game Window World size bound support
@@ -149,6 +155,10 @@ public class GlobalBehavior : MonoBehaviour {
     public void subtractEnemyCount()
     {
         mEnemyCount--;
+    }
+    public void scoreIncrease()
+    {
+        mEnemiesHit++;
     }
     #endregion
 
